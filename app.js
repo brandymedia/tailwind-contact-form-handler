@@ -12,14 +12,15 @@ app.post('/', (req, res) => {
 	const {
         message,
         name,
-        email
+        email,
+        redirect
     } = req.body;
 
     const msg = {
         to: process.env.TO_EMAIL, // Change to your recipient by adding TO_EMAIL to .env
         from: process.env.FROM_EMAIL, // Change to your verified sender by adding FROM_EMAIL to .env
         subject: 'Contact Form Submission',
-        text: '`Message: ${message} Name: ${name} Email: ${email}`',
+        text: `Message: ${message} Name: ${name} Email: ${email}`,
         html: `
             <strong>Message:</strong>
             <p>${message}</p>
@@ -34,13 +35,13 @@ app.post('/', (req, res) => {
         .send(msg)
         .then(() => {
         console.log('Email sent')
-        res.end()
+        res.redirect(`${redirect}?submit=true`)
     })
         .catch((error) => {
         console.error(error)
         res.end()
     })
-    
+
 });
 
 app.listen(port, (error) => {
